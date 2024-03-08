@@ -1,16 +1,25 @@
 import { useEffect } from 'react'
 import { useGetInfiniteData } from './query/QueryAndMutation'
-import { InView, useInView } from 'react-intersection-observer'
+import { useInView } from 'react-intersection-observer'
 function App() {
     const { ref, inView } = useInView()
-    const { data, fetchNextPage, isLoading, isFetchingNextPage, hasNextPage } =
-        useGetInfiniteData()
+    const {
+        data,
+        fetchNextPage,
+        isLoading,
+        isFetchingNextPage,
+        hasNextPage,
+        isError,
+        error,
+    } = useGetInfiniteData()
     useEffect(() => {
-        if (InView && hasNextPage) {
+        if (inView && hasNextPage) {
             fetchNextPage()
         }
     }, [inView, hasNextPage])
-
+    if (isError) {
+        return <p>{error}</p>
+    }
     if (isLoading) return <p>Loading...</p>
 
     return (
@@ -29,14 +38,9 @@ function App() {
                         </ul>
                     )
                 })}
-                <div ref={ref}></div>
-                {isFetchingNextPage ?? (
-                    <div className='loading '>
-                        <div></div>
-                        <div></div>
-                    </div>
-                )}
             </div>
+            {isFetchingNextPage ?? <div className=' '>loading...</div>}
+            <div ref={ref}></div>
         </>
     )
 }
