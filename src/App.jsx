@@ -21,6 +21,7 @@ function App() {
         return <p>{error}</p>
     }
     if (isLoading) return <p>Loading...</p>
+    // console.log(isFetchingNextPage)
 
     return (
         <>
@@ -38,8 +39,13 @@ function App() {
                         </ul>
                     )
                 })}
+                {isFetchingNextPage && (
+                    <div className='loading '>
+                        <div></div>
+                        <div></div>
+                    </div>
+                )}
             </div>
-            {isFetchingNextPage ?? <div className=' '>loading...</div>}
             <div ref={ref}></div>
         </>
     )
